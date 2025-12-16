@@ -1,0 +1,41 @@
+// Package pages contains full page templates.
+//
+// Pages are complete HTML documents that use layouts and compose components.
+// Each page typically corresponds to a route in the application.
+package pages
+
+import (
+	"replace-me/internal/middleware"
+	"replace-me/templates/components"
+	"replace-me/templates/layouts"
+)
+
+// Home renders the home page with a simple greeting demo.
+// This demonstrates:
+// - Layout composition
+// - Flash message display
+// - HTMX form interaction
+templ Home(flashes []middleware.FlashMessage) {
+	@layouts.Base("Home") {
+		<div class="space-y-8">
+			// Flash messages
+			if len(flashes) > 0 {
+				<div class="space-y-3 animate-fade-in">
+					for _, flash := range flashes {
+						@components.FlashMessage(flash)
+					}
+				</div>
+			}
+			// Hero section
+			@components.HeroSection()
+			// HTMX Demo Card
+			@components.HTMXDemoCard()
+			// Features Grid
+			@components.FeaturesGrid()
+			// Features List
+			@components.FeaturesList()
+			// Quick start
+			@components.QuickStart()
+		</div>
+	}
+}

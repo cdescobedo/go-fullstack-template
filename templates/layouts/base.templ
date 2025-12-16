@@ -1,0 +1,37 @@
+// Package layouts contains page layout templates.
+//
+// Layouts provide the HTML document structure that wraps page content.
+// They include the <head>, common scripts/styles, and page structure.
+//
+// Usage:
+//
+//	@layouts.Base("Page Title") {
+//	    <div>Your page content here</div>
+//	}
+package layouts
+
+templ Base(title string) {
+	<!DOCTYPE html>
+	<html lang="en" class="custom-scrollbar">
+		<head>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			<meta name="theme-color" content="#0a0a0f"/>
+			<title>{ title } | Go Fullstack</title>
+			<link href="/static/css/output.css" rel="stylesheet"/>
+			<script src="https://unpkg.com/htmx.org@2.0.3"></script>
+		</head>
+		<body class="min-h-screen">
+			<main class="container mx-auto px-4 py-12 max-w-4xl">
+				{ children... }
+			</main>
+			<footer class="container mx-auto px-4 py-8 max-w-4xl">
+				<div class="border-t border-surface-700 pt-8 text-center text-sm text-gray-600">
+					<p class="font-mono">
+						<span class="text-accent">go</span> fullstack starter
+					</p>
+				</div>
+			</footer>
+		</body>
+	</html>
+}

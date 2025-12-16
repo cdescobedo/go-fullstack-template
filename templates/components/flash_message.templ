@@ -1,0 +1,66 @@
+// Package components contains reusable UI components.
+//
+// Components are small, reusable pieces of UI that can be composed into pages.
+// They should be stateless and receive all data they need as parameters.
+package components
+
+import "replace-me/internal/middleware"
+
+// FlashMessage renders a styled notification message.
+// The style (color, icon) is determined by the message type.
+//
+// Types:
+//   - success: Green/accent theme
+//   - error: Red theme
+//   - warning: Yellow/amber theme
+//   - info: Blue theme
+//
+// Usage in templates:
+//
+//	for _, flash := range flashes {
+//	    @components.FlashMessage(flash)
+//	}
+//
+// Creating flash messages in handlers:
+//
+//	middleware.AddFlash(c, middleware.FlashSuccess, "Item created!")
+//	return c.Redirect(http.StatusSeeOther, "/")
+templ FlashMessage(flash middleware.FlashMessage) {
+	switch flash.Type {
+		case "success":
+			<div class="flex items-center gap-3 px-4 py-3 rounded-lg bg-accent/10 border border-accent/20 text-accent" role="alert">
+				<svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+				</svg>
+				<span class="text-sm">{ flash.Message }</span>
+			</div>
+		case "error":
+			<div class="flex items-center gap-3 px-4 py-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400" role="alert">
+				<svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+				</svg>
+				<span class="text-sm">{ flash.Message }</span>
+			</div>
+		case "warning":
+			<div class="flex items-center gap-3 px-4 py-3 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-400" role="alert">
+				<svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+				</svg>
+				<span class="text-sm">{ flash.Message }</span>
+			</div>
+		case "info":
+			<div class="flex items-center gap-3 px-4 py-3 rounded-lg bg-blue-500/10 border border-blue-500/20 text-blue-400" role="alert">
+				<svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+				</svg>
+				<span class="text-sm">{ flash.Message }</span>
+			</div>
+		default:
+			<div class="flex items-center gap-3 px-4 py-3 rounded-lg bg-surface-700 border border-surface-600 text-gray-400" role="alert">
+				<svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+				</svg>
+				<span class="text-sm">{ flash.Message }</span>
+			</div>
+	}
+}

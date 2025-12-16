@@ -1,0 +1,43 @@
+package components
+
+templ HTMXDemoCard() {
+	<div class="card animate-slide-up stagger-1 opacity-0">
+		<div class="flex items-center gap-3 mb-6">
+			<div class="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center">
+				<svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+				</svg>
+			</div>
+			<div>
+				<h2 class="text-lg font-semibold text-white">HTMX Demo</h2>
+				<p class="text-sm text-gray-500">Interactive without JavaScript frameworks</p>
+			</div>
+		</div>
+		<form hx-post="/greet" hx-target="#greeting-text" hx-swap="innerHTML" class="space-y-4">
+			<div>
+				<label for="name" class="block text-sm font-medium text-gray-400 mb-2">
+					Your Name
+				</label>
+				<input
+					type="text"
+					id="name"
+					name="name"
+					placeholder="Enter your name..."
+					class="input-terminal"
+					autocomplete="off"
+				/>
+			</div>
+			<button type="submit" class="btn-glow w-full sm:w-auto">
+				<span class="flex items-center justify-center gap-2">
+					Say Hello
+					<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+					</svg>
+				</span>
+			</button>
+		</form>
+		<div id="greeting" class="mt-6 p-4 rounded-lg bg-surface-900 border border-surface-700">
+			<p id="greeting-text" class="terminal-prompt text-sm">Waiting for input...</p>
+		</div>
+	</div>
+}
