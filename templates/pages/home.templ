@@ -14,7 +14,8 @@ import (
 // This demonstrates:
 // - Layout composition
 // - Flash message display
-// - HTMX form interaction
+// - HTMX form interaction (server-side)
+// - Alpine.js interactivity (client-side)
 templ Home(flashes []middleware.FlashMessage) {
 	@layouts.Base("Home") {
 		<div class="space-y-8">
@@ -27,15 +28,281 @@ templ Home(flashes []middleware.FlashMessage) {
 				</div>
 			}
 			// Hero section
-			@components.HeroSection()
-			// HTMX Demo Card
-			@components.HTMXDemoCard()
+			<header class="text-center py-12 animate-fade-in">
+				<div
+					class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-themed-card border border-themed text-sm text-themed-muted mb-6"
+				>
+					<span class="w-2 h-2 rounded-full bg-accent animate-pulse"></span>
+					Ready to build
+				</div>
+				<h1 class="text-4xl md:text-5xl font-bold text-themed mb-4 tracking-tight">
+					<span class="gradient-text">Go Fullstack</span> Starter
+				</h1>
+				<p class="text-lg text-themed-muted max-w-xl mx-auto leading-relaxed">
+					A production-ready template for building modern web applications with Go, HTMX, and Tailwind CSS.
+				</p>
+			</header>
+			// Demo Cards
+			<div class="grid md:grid-cols-2 gap-6">
+				// HTMX Demo Card
+				<div class="card animate-slide-up stagger-1 opacity-0">
+					<div class="flex items-center gap-3 mb-6">
+						<div class="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center">
+							<svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+							</svg>
+						</div>
+						<div>
+							<h2 class="text-lg font-semibold text-themed">HTMX Demo</h2>
+							<p class="text-sm text-themed-subtle">Interactive without JavaScript frameworks</p>
+						</div>
+					</div>
+					<form hx-post="/greet" hx-target="#greeting-text" hx-swap="innerHTML" class="space-y-4">
+						<div>
+							<label for="name" class="block text-sm font-medium text-themed-muted mb-2">
+								Your Name
+							</label>
+							<input
+								type="text"
+								id="name"
+								name="name"
+								placeholder="Enter your name..."
+								class="input-terminal"
+								autocomplete="off"
+							/>
+						</div>
+						<button type="submit" class="btn-glow w-full sm:w-auto">
+							<span class="flex items-center justify-center gap-2">
+								Say Hello
+								<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+								</svg>
+							</span>
+						</button>
+					</form>
+					<div id="greeting" class="mt-6 p-4 rounded-lg bg-themed-input border border-themed">
+						<p id="greeting-text" class="terminal-prompt text-sm">Waiting for input...</p>
+					</div>
+				</div>
+				// Alpine Demo Card
+				<div class="card animate-slide-up stagger-2 opacity-0">
+					<div class="flex items-center gap-3 mb-6">
+						<div class="w-10 h-10 rounded-lg bg-purple-500/10 flex items-center justify-center">
+							<svg class="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3l14 9-14 9V3z"></path>
+							</svg>
+						</div>
+						<div>
+							<h2 class="text-lg font-semibold text-themed">Alpine.js Demo</h2>
+							<p class="text-sm text-themed-subtle">Client-side interactivity without server</p>
+						</div>
+					</div>
+					<div class="space-y-4">
+						// Theme toggle - controls global dark mode
+						<div class="flex items-center justify-between p-3 rounded-lg bg-themed-input border border-themed">
+							<div class="flex items-center gap-2">
+								<svg x-show="!darkMode" class="w-4 h-4 text-amber-500" fill="currentColor" viewBox="0 0 24 24">
+									<path d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.166a.75.75 0 00-1.06-1.06l-1.591 1.59a.75.75 0 101.06 1.061l1.591-1.59zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01.75.75zM17.834 18.894a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 10-1.061 1.06l1.59 1.591zM12 18a.75.75 0 01.75.75V21a.75.75 0 01-1.5 0v-2.25A.75.75 0 0112 18zM7.758 17.303a.75.75 0 00-1.061-1.06l-1.591 1.59a.75.75 0 001.06 1.061l1.591-1.59zM6 12a.75.75 0 01-.75.75H3a.75.75 0 010-1.5h2.25A.75.75 0 016 12zM6.697 7.757a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 00-1.061 1.06l1.59 1.591z"></path>
+								</svg>
+								<svg x-show="darkMode" class="w-4 h-4 text-purple-400" fill="currentColor" viewBox="0 0 24 24">
+									<path fill-rule="evenodd" d="M9.528 1.718a.75.75 0 01.162.819A8.97 8.97 0 009 6a9 9 0 009 9 8.97 8.97 0 003.463-.69.75.75 0 01.981.98 10.503 10.503 0 01-9.694 6.46c-5.799 0-10.5-4.701-10.5-10.5 0-4.368 2.667-8.112 6.46-9.694a.75.75 0 01.818.162z" clip-rule="evenodd"></path>
+								</svg>
+								<span class="text-sm text-themed-muted" x-text="darkMode ? 'Dark mode' : 'Light mode'"></span>
+							</div>
+							<button
+								@click="darkMode = !darkMode"
+								:class="darkMode ? 'bg-purple-500' : 'bg-gray-300'"
+								class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+							>
+								<span
+									:class="darkMode ? 'translate-x-6' : 'translate-x-1'"
+									class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform shadow-sm"
+								></span>
+							</button>
+						</div>
+						// Dropdown example
+						<div x-data="{ open: false }" class="relative">
+							<button
+								@click="open = !open"
+								class="w-full flex items-center justify-between p-3 rounded-lg bg-themed-input border border-themed text-sm text-themed-muted hover:border-accent/30 transition-colors"
+							>
+								<span>Select an option</span>
+								<svg
+									:class="open ? 'rotate-180' : ''"
+									class="w-4 h-4 transition-transform"
+									fill="none"
+									stroke="currentColor"
+									viewBox="0 0 24 24"
+								>
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+								</svg>
+							</button>
+							<div
+								x-show="open"
+								x-transition:enter="transition ease-out duration-100"
+								x-transition:enter-start="opacity-0 scale-95"
+								x-transition:enter-end="opacity-100 scale-100"
+								x-transition:leave="transition ease-in duration-75"
+								x-transition:leave-start="opacity-100 scale-100"
+								x-transition:leave-end="opacity-0 scale-95"
+								@click.outside="open = false"
+								class="absolute z-10 mt-1 w-full rounded-lg bg-themed-card border border-themed shadow-lg"
+							>
+								<div class="py-1">
+									<button @click="open = false" class="w-full px-4 py-2 text-left text-sm text-themed-muted hover:bg-accent/10 hover:text-accent transition-colors">Option 1</button>
+									<button @click="open = false" class="w-full px-4 py-2 text-left text-sm text-themed-muted hover:bg-accent/10 hover:text-accent transition-colors">Option 2</button>
+									<button @click="open = false" class="w-full px-4 py-2 text-left text-sm text-themed-muted hover:bg-accent/10 hover:text-accent transition-colors">Option 3</button>
+								</div>
+							</div>
+						</div>
+						// Counter example
+						<div x-data="{ count: 0 }" class="flex items-center justify-between p-3 rounded-lg bg-themed-input border border-themed">
+							<span class="text-sm text-themed-muted">Counter: <span x-text="count" class="font-mono text-purple-400"></span></span>
+							<div class="flex gap-2">
+								<button
+									@click="count--"
+									class="w-8 h-8 rounded bg-themed-card border border-themed text-themed-muted hover:border-accent/30 hover:text-accent transition-colors flex items-center justify-center"
+								>-</button>
+								<button
+									@click="count++"
+									class="w-8 h-8 rounded bg-themed-card border border-themed text-themed-muted hover:border-accent/30 hover:text-accent transition-colors flex items-center justify-center"
+								>+</button>
+							</div>
+						</div>
+					</div>
+					<p class="mt-4 text-xs text-themed-subtle">No server requests - all state is client-side</p>
+				</div>
+			</div>
 			// Features Grid
-			@components.FeaturesGrid()
+			<div class="animate-slide-up stagger-2 opacity-0">
+				<h2 class="text-sm font-semibold text-themed-subtle uppercase tracking-wider mb-4">Stack</h2>
+				<div class="grid grid-cols-2 md:grid-cols-5 gap-3">
+					<a class="feature-tag" href="https://echo.labstack.com/" target="_blank">
+						<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none">
+							<!-- Echo's isometric geometric logo simplified -->
+							<polygon points="12,2 20,7 12,12 4,7" fill="#6B7280"></polygon>
+							<polygon points="4,7 12,12 12,22 4,17" fill="#00AFD1"></polygon>
+							<polygon points="12,12 20,7 20,17 12,22" fill="#4AE1FF"></polygon>
+						</svg>
+						<span>Echo</span>
+					</a>
+					<a class="feature-tag" href="https://www.postgresql.org/" target="_blank">
+						<svg class="w-4 h-4 text-blue-400" viewBox="0 0 24 24" fill="currentColor">
+							<path
+								d="M23.56 14.72c-.14-.26-.48-.34-1.01-.23-1.65.34-2.29.13-2.53-.02 1.34-2.05 2.45-4.52 3.04-6.83.27-1.05.8-3.52.12-4.73a1.56 1.56 0 0 0-.15-.24C21.69.91 19.8.02 17.51 0c-1.49-.02-2.77.35-3.12.48a9.4 9.4 0 0 0-.52-.08 8.04 8.04 0 0 0-1.31-.13c-1.18-.02-2.2.26-3.05.84-.86-.32-4.79-1.65-7.22.08C.94 2.15.31 3.87.43 6.3c.04.82.51 3.33 1.24 5.74.46 1.51.94 2.7 1.43 3.58.55.99 1.13 1.59 1.71 1.79.45.15 1.13.14 1.86-.73.8-.96 1.59-1.83 1.94-2.21.44.24.91.36 1.39.38a11 11 0 0 0-.25.31c-.34.43-.41.52-1.5.74-.31.06-1.13.23-1.15.81 0 .12.03.23.09.33.23.42.92.61 1.02.63 1.33.33 2.5.09 3.37-.68-.02 2.23.08 4.42.35 5.09.22.55.76 1.9 2.47 1.9.25 0 .53-.03.83-.09 1.78-.38 2.56-1.17 2.86-2.91.15-.87.4-2.88.54-4.1.02-.07.04-.12.06-.14.07-.05.43.03.43.03l.25.02c.85.04 1.91-.14 2.53-.43.64-.3 1.81-1.03 1.6-1.67zm-21.19-2.84c-.74-2.44-1.18-4.89-1.21-5.57-.11-2.17.42-3.68 1.56-4.49 1.84-1.3 4.84-.54 6.11-.13l-.01.01c-2.02 2.04-1.98 5.54-1.97 5.75 0 .08.01.2.02.36.03.59.1 1.68-.07 2.92-.16 1.15.19 2.28.97 3.09.08.08.16.16.25.24-.35.37-1.1 1.19-1.9 2.16-.57.68-.96.55-1.09.51-.39-.13-.81-.59-1.24-1.32-.48-.84-.96-2.03-1.42-3.53zm6.01 5.09c-.17-.04-.33-.11-.43-.18.09-.04.24-.09.48-.14 1.28-.26 1.48-.45 1.91-1 .1-.13.21-.27.37-.44a.35.35 0 0 0 .07-.13c.17-.15.27-.11.44-.04.16.06.31.26.37.48.03.1.06.29-.05.44-.9 1.27-2.22 1.25-3.17 1.01zm2.09-3.99-.05.14c-.13.36-.26.69-.33 1-.67 0-1.32-.29-1.81-.8-.63-.66-.91-1.57-.78-2.5.18-1.31.12-2.45.08-3.06l-.01-.22c.3-.26 1.67-1 2.64-.77.45.1.72.41.83.93.58 2.7.08 3.83-.33 4.74-.08.19-.16.36-.23.55zm7.36 4.57-.06.6-.15.44c-.01.36-.05.65-.12.87-.06.23-.14.49-.18 1.06-.11 1.41-.88 2.23-2.42 2.56-1.52.33-1.78-.5-2.02-1.22l-.08-.23c-.22-.59-.19-1.41-.16-2.56.02-.56-.02-1.9-.33-2.65 0-.29.01-.59.02-.89a.35.35 0 0 0-.02-.11 1.49 1.49 0 0 0-.04-.21c-.12-.43-.42-.79-.78-.94-.14-.06-.4-.17-.72-.09.07-.28.18-.59.31-.92l.05-.14c.06-.16.13-.33.21-.5.43-.95 1.01-2.25.38-5.18-.24-1.1-1.03-1.63-2.23-1.51-.72.07-1.38.37-1.71.53l-.2.1c.09-1.11.44-3.17 1.74-4.48.09-.09.2-.18.3-.28a.35.35 0 0 0 .14-.06c.75-.57 1.69-.85 2.8-.83.41 0 .8.03 1.17.08 1.94.35 3.24 1.45 4.04 2.38.81.96 1.26 1.93 1.43 2.45-1.32-.13-2.22.13-2.68.78-.99 1.42.54 4.17 1.28 5.5.14.24.25.45.29.54.24.58.55.97.78 1.26.07.09.14.17.19.25-.4.12-1.12.38-1.06 1.72-.01.16-.04.45-.08.81-.05.21-.07.46-.1.77zm.89-1.62c-.04-.83.27-.92.6-1.01l.13-.04c.04.04.09.07.13.1.57.38 1.58.42 3.01.13-.2.18-.52.4-.95.6-.41.19-1.1.33-1.75.36-.72.03-1.09-.08-1.17-.15zm.57-9.27c-.01.35-.05.67-.11 1-.05.36-.11.73-.13 1.18-.01.44.04.89.09 1.33.11.89.22 1.8-.21 2.7-.05-.13-.12-.26-.19-.39-.05-.13-.17-.33-.33-.62-.62-1.1-2.06-3.69-1.32-4.74.38-.54 1.34-.57 2.18-.46zm.23 7.01-.09-.11-.04-.04c.73-1.2.58-2.39.46-3.44-.05-.43-.1-.84-.09-1.22.01-.41.07-.75.12-1.09.06-.42.13-.84.11-1.35.01-.05.02-.12.01-.19-.05-.49-.6-1.94-1.73-3.25-.61-.71-1.49-1.5-2.69-2.04.53-.11 1.23-.2 2.02-.19 2.05.05 3.67.81 4.82 2.28.02.03.05.07.07.1.72 1.36-.28 6.28-2.99 10.54z"
+							></path>
+						</svg>
+						<span>PostgreSQL</span>
+					</a>
+					<a class="feature-tag" href="https://htmx.org/" target="_blank">
+						<svg class="w-4 h-4 text-orange-400" viewBox="0 0 24 24" fill="currentColor">
+							<path d="M0 13.01v-2l7.09-2.98.58 1.94-5.1 2.05 5.16 2.05-.63 1.9Zm16.37 1.03 5.18-2-5.16-2.09.65-1.88L24 10.95v2.12L17 16zm-2.85-9.98H16l-5.47 15.88H8.05Z"></path>
+						</svg>
+						<span>HTMX</span>
+					</a>
+					<a class="feature-tag" href="https://tailwindcss.com/" target="_blank">
+						<svg class="w-4 h-4 text-sky-400" viewBox="0 0 24 24" fill="currentColor">
+							<path
+								d="M12.001 4.8c-3.2 0-5.2 1.6-6 4.8 1.2-1.6 2.6-2.2 4.2-1.8.913.228 1.565.89 2.288 1.624C13.666 10.618 15.027 12 18.001 12c3.2 0 5.2-1.6 6-4.8-1.2 1.6-2.6 2.2-4.2 1.8-.913-.228-1.565-.89-2.288-1.624C16.337 6.182 14.976 4.8 12.001 4.8zm-6 7.2c-3.2 0-5.2 1.6-6 4.8 1.2-1.6 2.6-2.2 4.2-1.8.913.228 1.565.89 2.288 1.624 1.177 1.194 2.538 2.576 5.512 2.576 3.2 0 5.2-1.6 6-4.8-1.2 1.6-2.6 2.2-4.2 1.8-.913-.228-1.565-.89-2.288-1.624C10.337 13.382 8.976 12 6.001 12z"
+							></path>
+						</svg>
+						<span>TailwindCSS</span>
+					</a>
+					<a class="feature-tag" href="https://alpinejs.dev/" target="_blank">
+						<svg class="w-4 h-4 text-purple-400" viewBox="0 0 24 24" fill="currentColor">
+							<path d="M3 18h6l3-9 3 9h6L12 3z"></path>
+						</svg>
+						<span>Alpine.js</span>
+					</a>
+				</div>
+			</div>
 			// Features List
-			@components.FeaturesList()
+			<div class="card animate-slide-up stagger-3 opacity-0">
+				<h2 class="text-lg font-semibold text-themed mb-6">What's Included</h2>
+				<div class="grid md:grid-cols-2 gap-4">
+					<div class="flex items-start gap-3">
+						<div class="w-6 h-6 rounded-full bg-accent/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+							<svg class="w-3.5 h-3.5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+							</svg>
+						</div>
+						<div>
+							<p class="text-themed font-medium">Type-safe Templates</p>
+							<p class="text-sm text-themed-subtle">Templ for compile-time checked HTML</p>
+						</div>
+					</div>
+					<div class="flex items-start gap-3">
+						<div class="w-6 h-6 rounded-full bg-accent/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+							<svg class="w-3.5 h-3.5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+							</svg>
+						</div>
+						<div>
+							<p class="text-themed font-medium">Database Migrations</p>
+							<p class="text-sm text-themed-subtle">Bun ORM with SQL migrations</p>
+						</div>
+					</div>
+					<div class="flex items-start gap-3">
+						<div class="w-6 h-6 rounded-full bg-accent/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+							<svg class="w-3.5 h-3.5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+							</svg>
+						</div>
+						<div>
+							<p class="text-themed font-medium">Session Management</p>
+							<p class="text-sm text-themed-subtle">Flash messages and cookie sessions</p>
+						</div>
+					</div>
+					<div class="flex items-start gap-3">
+						<div class="w-6 h-6 rounded-full bg-accent/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+							<svg class="w-3.5 h-3.5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+							</svg>
+						</div>
+						<div>
+							<p class="text-themed font-medium">Structured Logging</p>
+							<p class="text-sm text-themed-subtle">slog with JSON output support</p>
+						</div>
+					</div>
+					<div class="flex items-start gap-3">
+						<div class="w-6 h-6 rounded-full bg-accent/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+							<svg class="w-3.5 h-3.5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+							</svg>
+						</div>
+						<div>
+							<p class="text-themed font-medium">Hot Reload</p>
+							<p class="text-sm text-themed-subtle">Air for instant development feedback</p>
+						</div>
+					</div>
+					<div class="flex items-start gap-3">
+						<div class="w-6 h-6 rounded-full bg-accent/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+							<svg class="w-3.5 h-3.5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+							</svg>
+						</div>
+						<div>
+							<p class="text-themed font-medium">Graceful Shutdown</p>
+							<p class="text-sm text-themed-subtle">Clean connection handling</p>
+						</div>
+					</div>
+				</div>
+			</div>
 			// Quick start
-			@components.QuickStart()
+			<div class="card animate-slide-up stagger-4 opacity-0">
+				<h2 class="text-lg font-semibold text-themed mb-4">Quick Start</h2>
+				<div class="bg-themed-input rounded-lg p-4 font-mono text-sm overflow-x-auto border border-themed">
+					<div class="text-themed-subtle"># Initialize your project</div>
+					<div class="text-themed"><span class="text-secondary">$</span> ./init.sh myapp</div>
+					<div class="mt-2 text-themed-subtle"># Install dependencies and start database</div>
+					<div class="text-themed"><span class="text-secondary">$</span> make install</div>
+					<div class="text-themed"><span class="text-secondary">$</span> make dbup</div>
+					<div class="text-themed"><span class="text-secondary">$</span> make migrate-up</div>
+					<div class="mt-2 text-themed-subtle"># Start developing</div>
+					<div class="text-themed"><span class="text-secondary">$</span> make dev</div>
+					<div class="mt-2 text-accent-themed"># Server running at localhost:8090</div>
+				</div>
+			</div>
 		</div>
 	}
 }

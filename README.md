@@ -9,7 +9,8 @@ A production-ready starter template for building fullstack Go web applications. 
 - **[PostgreSQL](https://www.postgresql.org/)** - Reliable relational database
 - **[templ](https://templ.guide/)** - Type-safe HTML templates
 - **[Tailwind CSS](https://tailwindcss.com/)** - Utility-first CSS framework
-- **[HTMX](https://htmx.org/)** - HTML-over-the-wire interactivity
+- **[HTMX](https://htmx.org/)** - Server-driven interactivity
+- **[Alpine.js](https://alpinejs.dev/)** - Client-side reactivity
 - **[Air](https://github.com/air-verse/air)** - Live reload for development
 
 ### Built-in Functionality
@@ -224,6 +225,37 @@ func (h *Handlers) Greet(c echo.Context) error {
 }
 ```
 
+### Alpine.js Integration
+
+Alpine.js handles client-side interactivity without server round-trips:
+
+```html
+<!-- Toggle -->
+<div x-data="{ open: false }">
+    <button @click="open = !open">Toggle</button>
+    <div x-show="open">Content here</div>
+</div>
+
+<!-- Dropdown -->
+<div x-data="{ open: false }" @click.outside="open = false">
+    <button @click="open = !open">Menu</button>
+    <div x-show="open" x-transition>
+        <a href="#">Option 1</a>
+        <a href="#">Option 2</a>
+    </div>
+</div>
+
+<!-- Form validation -->
+<form x-data="{ email: '' }">
+    <input x-model="email" type="email">
+    <span x-show="email && !email.includes('@')">Invalid email</span>
+</form>
+```
+
+**When to use which:**
+- **HTMX**: Data needs to come from server (forms, search, pagination)
+- **Alpine.js**: Pure UI state (dropdowns, tabs, modals, toggles)
+
 ## Deployment
 
 ### Build for Production
@@ -266,7 +298,7 @@ CORS_ALLOWED_ORIGINS=https://myapp.com
 
 **Why templ?** Type-safe templates with Go syntax. Catches errors at compile time. Better IDE support than text/template.
 
-**Why HTMX?** Adds interactivity without JavaScript frameworks. Perfect for solo developers who want dynamic UIs without SPA complexity.
+**Why HTMX + Alpine.js?** HTMX handles server interactions (forms, partial updates), Alpine.js handles client-side state (dropdowns, toggles, modals). Together they cover most UI needs without SPA complexity.
 
 **Why Cookie Sessions?** Simpler than server-side sessions (no Redis needed). Good enough for most applications.
 
@@ -276,6 +308,7 @@ CORS_ALLOWED_ORIGINS=https://myapp.com
 - [Bun Documentation](https://bun.uptrace.dev/)
 - [templ Guide](https://templ.guide/)
 - [HTMX Documentation](https://htmx.org/docs/)
+- [Alpine.js Documentation](https://alpinejs.dev/start-here)
 - [Tailwind CSS Documentation](https://tailwindcss.com/docs)
 
 ## License

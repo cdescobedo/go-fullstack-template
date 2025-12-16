@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- Fullstack layers icon -->
+  <!-- Back layer (database/backend) -->
+  <polygon points="16,4 28,10 16,16 4,10" fill="#6B7280"/>
+  <!-- Middle layer (server/API) -->
+  <polygon points="4,10 16,16 16,22 4,16" fill="#a855f7"/>
+  <polygon points="16,16 28,10 28,16 16,22" fill="#8b5cf6"/>
+  <!-- Front layer (frontend) -->
+  <polygon points="4,16 16,22 16,28 4,22" fill="#00d4aa"/>
+  <polygon points="16,22 28,16 28,22 16,28" fill="#00b894"/>
+</svg>
